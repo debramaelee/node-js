@@ -18,10 +18,6 @@ var fileText = 'Hello, world!'
 
 var async = require('async');
 
-// async.map(filenames, fs.writeFile, fileText, function(err, fileText){
-// 	console.log('All files written');
-// });
-
 function transform(filenames, callback) {
 	fs.writeFile(filenames, fileText, function(err){
 		if (err){
@@ -31,6 +27,26 @@ function transform(filenames, callback) {
 		callback(null);
 	});
 }
+
 async.map(filenames, transform, function(err, fileText){
 	console.log('All files written successfully');
 });
+
+//better method using each
+function each(filename, callback){
+  fs.writeFile(filename, fileText, function(err){
+    if(err){
+      callback(err);
+      return;
+    }
+    callback(null);
+  });
+}
+
+async.each(filenames, each, function(err) {
+  if(err) {
+    console.log(err.message);
+    return;
+  }
+  console.log('Sucess.');
+})

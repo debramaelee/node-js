@@ -7,11 +7,6 @@ var request = require('request');
 var url = 'https://raw.githubusercontent.com/voodootikigod/logo.js/master/js.png';
 var filename = 'js-logo.png';
 var thumbnailFilename = 'js-logo-small.png';
-var requestOptions = {
-  url: url,
-  encoding: null
-};
-//requestOptions gets url, null means no encoding (for saving images directly)
 
 // request(requestOptions, function(err, response, data) {
 //   if (err) {
@@ -37,6 +32,11 @@ var requestOptions = {
 // });
 
 function downloadAndCreateThumbnail(url, filename, thumbnailFilename, callback) {
+	var requestOptions = {
+	  url: url,
+	  encoding: null
+	};
+	//requestOptions gets url, null means no encoding (for saving images directly)
 	request(requestOptions, function(err, resp, data){
 		if(err){
 			callback(err);
@@ -49,7 +49,7 @@ function downloadAndCreateThumbnail(url, filename, thumbnailFilename, callback) 
 			return;
 		}
 		
-	})
+	});
 	fs.writeFile(filename, data, function(err){
 		if(err){
 			callback(err);
@@ -75,4 +75,4 @@ downloadAndCreateThumbnail(url, filename, thumbnailFilename, function(err) {
     return;
   }
   console.log('It worked');
-})
+});

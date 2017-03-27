@@ -9,62 +9,39 @@
 //List all files
 var fs = require('fs');
 var async = require('async');
+var gm = require('gm')
 // var requestOptions = {
 //   url: url,
 //   encoding: null
 // };
 
+function resizeImage(filename, callback){
+	gm('images/' + filename)
+	.resize(240, 240)
+	.write(filename, callback);
+}
+
+
 var dirpath = './images1';
-fs.readdir(dirpath, function(err, list){
+
+fs.readdir(dirpath, function(err, files){
 	if (err){
 		callback(err);
 		return;
 	}
-	entries.forEach(function(imageName) {
-		console.log('Found file ' + imageName);
+	console.log('before', files);
+	files = files.map(function(filename){
+		return 'images/' + filename
+	});
+		async.each(files, resizeImage, funciton(err){
+			if(err){
+				console.log(err.message);
+				return;
+			}
+			console.log('It worked.');
+		});
 	});
 
-
-
-//Resize
-function downloadAndCreateThumbnail(imageName, imageName, callback) {
-	// request(requestOptions, function(err, resp, data){
-	// 	if(err){
-	// 		callback(err);
-	// 		return;
-	// 	}
-	
-	// request(url, function(err, resp, data){
-	// 	if(err){
-	// 		callback(err);
-	// 		return;
-	// 	}
-		
-	// })
-	// fs.writeFile(filename, data, function(err){
-	// 	if(err){
-	// 		callback(err);
-	// 		return;
-	// 	}
-	
-	gm(imageName)
-	.resize(240, 240)
-	.write(imageName, function(err) {
-		if(err){
-			callback(err);
-			return;
-		}
-	callback(null);
-	// });
-	// });
-	// });
-});
-	// });
-	}
-});
-// async.map(list, transform, function(err, imageName){
-// 	console.log('Success');
-// });
 
 
 
